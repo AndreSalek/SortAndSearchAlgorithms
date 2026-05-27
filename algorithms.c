@@ -1,4 +1,6 @@
 #include "algorithms.h"
+#include <stdlib.h>
+#include <string.h>
 
 void swap_pos(int *arr, int a, int b) {
     int temp = arr[a];
@@ -54,4 +56,50 @@ void bubble_sort(int *arr, int length){
             if(arr[j] > arr[j + 1]) swap_pos(arr, j, j + 1);
         }
     }
+}
+
+
+static void _merge(int *arr, int left, int mid, int right) {
+    int left_size = mid - left + 1;
+    int right_size = right - mid;
+
+    int *left_arr = malloc(sizeof(int) * left_size);
+    int *right_arr = malloc(sizeof(int) * right_size);
+
+    memcpy(left_arr, arr + left, sizeof(int) * left_size);
+    memcpy(right_arr, arr + mid + 1, sizeof(int) * right_size);
+
+    int i = 0, j = 0, k = left;
+    while (i < left_size && j < right_size) {
+        if (left_arr[i] <= right_arr[j]) {
+            arr[k] = left_arr[i];
+            i++;
+        } else {
+            arr[k] = right_arr[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < left_size) { arr[k++] = left_arr[i++]; }
+    while (j < right_size) { arr[k++] = right_arr[j++]; }
+
+    free(left_arr);
+    free(right_arr);
+}
+
+static void _merge_sort(int *arr, int low, int high) {
+    if (low >= high) return;
+
+    int mid = low + (high - low) / 2;
+
+    _merge_sort(arr, low, mid);
+    _merge_sort(arr, mid + 1, high);
+
+    _merge(arr, low, mid, high);
+}
+
+void merge_sort(int* arr, int length) {
+    if (arr == NULL || length <= 1) return;
+    _merge_sort(arr, 0, length - 1);
 }

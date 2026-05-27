@@ -1,8 +1,6 @@
 #ifndef ALGORITHMS_H
 #define ALGORITHMS_H
 
-#include <stddef.h>
-
 /// @brief Swaps two elements in an array by index
 void swap_pos(int *arr, int a, int b);
 
