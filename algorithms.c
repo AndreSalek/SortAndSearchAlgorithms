@@ -103,3 +103,28 @@ void merge_sort(int* arr, int length) {
     if (arr == NULL || length <= 1) return;
     _merge_sort(arr, 0, length - 1);
 }
+
+void heapify(int* arr, int length, int parentIndex) {
+    int root = parentIndex;
+    int leftNodeIndex = 2 * parentIndex + 1;
+    int rightNodeIndex = 2 * parentIndex + 2;
+
+    if (leftNodeIndex < length && arr[root] < arr[leftNodeIndex]) root = leftNodeIndex;
+    if (rightNodeIndex < length && arr[root] < arr[rightNodeIndex]) root = rightNodeIndex;
+
+    if (root == parentIndex) return;
+
+    swap_pos(arr, root, parentIndex);
+    heapify(arr, length, root);
+}
+
+void heap_sort(int* arr, int length) {
+    for (int i = length / 2 - 1; i >= 0; i--) {
+        heapify(arr, length, i);
+    }
+
+    for (int i = 0; i < length - 1; i++) {
+        swap_pos(arr, 0, length - i - 1);
+        heapify(arr, length - i - 1, 0);
+    }
+}
